@@ -18,6 +18,11 @@
 	color: white;
 }
 
+.error {
+	background-color: #FFBABA;
+	color: white;
+}
+
 .default_text {
 	position: fixed;
 	top: 50%;

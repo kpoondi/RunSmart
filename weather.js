@@ -47,10 +47,11 @@ $(document).ready(function(){
 	};
 
 	$('button').on('click', function() {
+		reset();
 		var zip = $('input').val();
 		var country = $('select').val();
 		var final_url = link + zip + ',' + country.toLowerCase() + rest;
-		reset();
+		checkInput(zip);
 		$.ajax({
 			type: 'GET',
 			url: final_url,
@@ -78,20 +79,35 @@ $(document).ready(function(){
 			}
 		});
 		
-		function styleChange() {
-			$('.backdrop').css('background-image', "url("+backGround[icon]+")");
-			$('.default_text').css('color', textStyle[icon]);
-		}
-
-		function reset() {			
-				$('#temp').val("");
-				$('#description').val("");
-				$('#humidity').val("");
-				$('#high').val("");
-				$('#low').val("");
-		}
-
 	});
+
+	function styleChange() {
+		$('.backdrop').css('background-image', "url("+backGround[icon]+")");
+		$('.default_text').css('color', textStyle[icon]);
+	}
+
+	function reset() {			
+		$('#temp').val("");
+		$('#description').val("");
+		$('#humidity').val("");
+		$('#high').val("");
+		$('#low').val("");
+	}
+
+	function checkInput(zip) {
+		var error_count = 0;
+		var error = "";
+		if(isNaN(parseInt(zip))) {
+			$('#zip').removeClass('boxes');
+			$('#zip').addClass('error');
+			error += "Please enter a valid zip code";
+			error_count++;
+		}
+
+		if(error_count > 0) {
+			alert(error);
+		}
+	}
 
 });
 
