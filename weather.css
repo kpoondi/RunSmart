@@ -1,0 +1,61 @@
+.c1 {
+	text-align: center;
+	color: navy;
+}
+
+.backdrop {
+	margin-top: 0px;
+	margin-left: -100px;
+	border-radius: 25px;
+	position: fixed;
+	background-image: url('http://cliparts.co/cliparts/8iA/6jd/8iA6jdoBT.svg');
+	height: 400px;
+	width: 100vw;
+}
+
+.boxes {
+	background-color: navy;
+	color: white;
+}
+
+.default_text {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -150px;
+	margin-left: -100px;
+	font-weight: bold;
+	color: navy;
+}
+
+.results {
+	width: 70px;
+}
+
+#description {
+	width: 100px;
+}
+
+#test {
+	background-color: navy:;
+}
+
+#humidity {
+	width: 40px;
+}
+
+#zip {
+	width: 100px;
+}
+
+#country {
+	width: 200px;
+}
+
+#city {
+	width: 200px;
+}
+
+
+
+
