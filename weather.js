@@ -5,7 +5,7 @@
 
 var link = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 var rest = '&appid=cc5a41fb95be101dacb32d7c4dbad2ac&units=imperial';
-var temp, sundown, description, humidity, high, low, time, sunup, sundown, icon, cartoon, city;
+var temp, sundown, description, humidity, high, low, time, sunup, sundown, icon, cartoon, city, nation;
 button = document.getElementById("bt");
 var JSON;
 
@@ -51,8 +51,8 @@ var textStyle  = {
 	'50n' : 'navy'
 };
 
-button.addEventListener("click", reset);
-
+var alphaCountries = ["AR", "BN", "CA", "IE", "KZ", "MT", 
+						"NL", "PE", "SO", "SZ", "UK"];
 function reset() {	
 	$('#zip').addClass('boxes');
 	$('#zip').removeClass('error');		
@@ -71,19 +71,25 @@ function getValues() {
 }
 
 function checkInput(zip, country) {
-	var error_count = 0;
 	var error = "";
+
+	for (var i = 0; i < alphaCountries.length; i++) {
+		if (country == alphaCountries[i]) {
+			json(zip, country);
+			return;
+		}
+	}
+
+	if (country == "JM") {
+		alert("Jamica does not use the postal code system. Please enter another country");
+		return;
+	}
+
 	if(isNaN(parseInt(zip))) {
 		$('#zip').removeClass('boxes');
 		$('#zip').addClass('error');
-		error += "Please enter a valid zip code";
-		error_count++;
-	}
-
-	if(error_count > 0) {
-		alert(error);
-		$('input').val("");
-		button.addEventListener("click", reset);
+		alert("Please enter a valid postal code");
+		button = document.getElementById("bt");
 	}
 	else {
 		json(zip, country);
@@ -108,6 +114,7 @@ function json(zip, country) {
 			sunup = data.sys.sunrise;
 			sundown = data.sys.sunset;
 			icon = data.weather[0].icon;
+			nation = data.sys.country;
 
 			$('#city').val(city);
 			$('#temp').val(temp + "˚F");
@@ -115,6 +122,7 @@ function json(zip, country) {
 			$('#humidity').val(humidity + '%');
 			$('#high').val(high + "˚F");
 			$('#low').val(low + "˚F");
+			$('select').val(nation);
 			styleChange();
 		}
 	});
@@ -124,3 +132,9 @@ function styleChange() {
 	$('.backdrop').css('background-image', "url("+backGround[icon]+")");
 	$('.default_text').css('color', textStyle[icon]);
 }
+
+function main() {
+	button.addEventListener("click", reset);
+}
+
+main();
