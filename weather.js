@@ -31,6 +31,14 @@ var backGround  = {
 };
 
 var iconAdvice = {
+	'01d' : 'Enjoy your run! Everything else seems fine outside.',
+	'01n' : 'Enjoy your run! Everything else seems fine outside.',
+	'02d': 'Enjoy your run! Everything else seems fine outside.',
+	'02n': 'Enjoy your run! Everything else seems fine outside.',
+	'03d': 'Enjoy your run! Everything else seems fine outside.',
+	'03n': 'Enjoy your run! Everything else seems fine outside.',
+	'04d': 'Enjoy your run! Everything else seems fine outside.',
+	'04n': 'Enjoy your run! Everything else seems fine outside.',
 	'09d': 'It looks like rain outside! Consider postponing.',
 	'09n': 'It looks like rain outside! Consider postponing.',
 	'10d': 'Light rain - be careful for slippery roads!',
@@ -98,8 +106,13 @@ function checkInput(zip, country) {
 		return;
 	}
 
+	if(country == "US" && zip.length != 5) {
+		$('#zip').addClass('error');
+		alert("Please enter a valid postal code. U.S postal codes are 5 digits in length.");
+		return;
+	}
+
 	if(isNaN(parseInt(zip))) {
-		$('#zip').removeClass('boxes');
 		$('#zip').addClass('error');
 		alert("Please enter a valid postal code");
 		button = document.getElementById("bt");
@@ -144,8 +157,33 @@ function styleChange() {
 }
 
 function makeTips() {
+	icon = '01d';
+	if (icon == '11d' || icon == '11n') {
+		$('.list-group').append('<li class="list-group-item list-group-item-action list-group-item-danger">' + iconAdvice[icon] + '</li>');
+		return;
+	}
+	else if (temp > 95) {
+		$('.list-group').append('<li class="list-group-item list-group-item-action list-group-item-danger">It seems excessively warm. Wait for temperatures to drop. Running is not advised!</li>');
+		return;
+	} 
+
+	if(icon.indexOf('n') > -1) {
+		$('.list-group').append('<li class="list-group-item"> Looks like the sun is not up! Wear high-visibility clothing and use a head</li>');
+	}
+
+	if(temp > 85) {
+		$('.list-group').append('<li class="list-group-item"> It is very hot outside! Wear a short-sleeve or singlet and take water with you for longer runs!</li>');
+	}
+	else if (temp < 40) {
+		$('.list-group').append('<li class="list-group-item"> It is quite chilly outside! Wear a few layers to start out. Gloves may also be a necessary for the start.</li>')
+	}
+	else {
+		$('.list-group').append('<li class="list-group-item">Temperatures seem ideal, but keep reading for additional advice!</li>')
+	}
+	
 	$('.list-group').append('<li class="list-group-item">' + iconAdvice[icon] + '</li>');
 
+	
 }
 
 function main() {
