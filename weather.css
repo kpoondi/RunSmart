@@ -9,7 +9,7 @@
 	border-radius: 25px;
 	position: fixed;
 	background-image: url('http://cliparts.co/cliparts/8iA/6jd/8iA6jdoBT.svg');
-	height: 400px;
+	height: 355px;
 	width: 100vw;
 }
 
@@ -27,7 +27,7 @@
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin-top: -150px;
+	margin-top: -230px;
 	margin-left: -100px;
 	font-weight: bold;
 	color: navy;
@@ -59,6 +59,10 @@
 
 #city {
 	width: 200px;
+}
+
+#tips {
+	text-align: left;
 }
 
 

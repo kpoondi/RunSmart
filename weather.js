@@ -5,7 +5,7 @@
 
 var link = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 var rest = '&appid=cc5a41fb95be101dacb32d7c4dbad2ac&units=imperial';
-var temp, sundown, description, humidity, high, low, time, sunup, sundown, icon, cartoon, city, nation;
+var temp, description, humidity, high, low, time, icon, cartoon, city;
 button = document.getElementById("bt");
 var JSON;
 
@@ -28,6 +28,19 @@ var backGround  = {
 	'13n' : 'http://images.freepicturesweb.com/img1/02/04/30.jpg',
 	'50d' : 'https://cruciality.files.wordpress.com/2010/11/mist.jpg',
 	'50n' : 'https://cruciality.files.wordpress.com/2010/11/mist.jpg'
+};
+
+var iconAdvice = {
+	'09d': 'It looks like rain outside! Consider postponing.',
+	'09n': 'It looks like rain outside! Consider postponing.',
+	'10d': 'Light rain - be careful for slippery roads!',
+	'10n': 'Light rain - be careful for slippery roads!',
+	'11d': 'THUNDERSTORM WARNING! AVOID RUNNING AT ALL COSTS!',
+	'11n': 'THUNDERSTORM WARNING! AVOID RUNNING AT ALL COSTS!',
+	'50d': 'Low visibility. Wear a high visibility jacket and use extra caution!',
+	'50n' : 'Low visibility. Wear a high visibility jacket and use extra caution!',
+	'13d' : 'It looks like snow! Be weary of icy roads and consider wearing a few extra layers!',
+	'13n' : 'It looks like snow! Be weary of icy roads and consider wearing a few extra layers!'
 };
 
 var textStyle  = {
@@ -111,10 +124,7 @@ function json(zip, country) {
 			high = data.main.temp_max;
 			low = data.main.temp_min;
 			time = data.dt;
-			sunup = data.sys.sunrise;
-			sundown = data.sys.sunset;
 			icon = data.weather[0].icon;
-			nation = data.sys.country;
 
 			$('#city').val(city);
 			$('#temp').val(temp + "˚F");
@@ -122,7 +132,6 @@ function json(zip, country) {
 			$('#humidity').val(humidity + '%');
 			$('#high').val(high + "˚F");
 			$('#low').val(low + "˚F");
-			$('select').val(nation);
 			styleChange();
 		}
 	});
@@ -131,6 +140,12 @@ function json(zip, country) {
 function styleChange() {
 	$('.backdrop').css('background-image', "url("+backGround[icon]+")");
 	$('.default_text').css('color', textStyle[icon]);
+	makeTips();
+}
+
+function makeTips() {
+	$('.list-group').append('<li class="list-group-item">' + iconAdvice[icon] + '</li>');
+
 }
 
 function main() {
