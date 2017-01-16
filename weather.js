@@ -1,7 +1,7 @@
 /* Defines all the necessary global variables that will be used to collect data from the Open Weather API
-   Also contains two large "key-value pair" arrays that contains links to different backgrounds that will
-   appear based on weather conditions.
- */
+   Also contains numerous "key-value" pair arrays that are used for various purposes from changing the background to rendering 
+   advice based on different parsed weather data. */
+ 
 
 var link = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 var rest = '&appid=cc5a41fb95be101dacb32d7c4dbad2ac&units=imperial';
@@ -45,8 +45,8 @@ var iconAdvice = {
 	'10n': 'Light rain - be careful for slippery roads!',
 	'11d': 'THUNDERSTORM WARNING! AVOID RUNNING AT ALL COSTS!',
 	'11n': 'THUNDERSTORM WARNING! AVOID RUNNING AT ALL COSTS!',
-	'50d': 'Low visibility. Wear a high visibility jacket and use extra caution!',
-	'50n' : 'Low visibility. Wear a high visibility jacket and use extra caution!',
+	'50d': 'Low visibility. Wear a high visibility clothing and use extra caution!',
+	'50n' : 'Low visibility. Wear a high visibility clothing and use extra caution!',
 	'13d' : 'It looks like snow! Be weary of icy roads and consider wearing a few extra layers!',
 	'13n' : 'It looks like snow! Be weary of icy roads and consider wearing a few extra layers!'
 };
@@ -92,6 +92,9 @@ var humidAdvice = {
 
 var alphaCountries = ["AR", "BN", "CA", "IE", "KZ", "MT", 
 						"NL", "PE", "SO", "SZ", "UK"];
+
+/* Used to reset all the output information after each API call */
+
 function reset() {	
 	$('#zip').addClass('boxes');
 	$('#zip').removeClass('error');		
@@ -99,17 +102,24 @@ function reset() {
 	$('#description').val("");
 	$('#humidity').val("");
 	$('#high').val("");
+	$('#city').val("");
 	$('#low').val("");
-	$('up').empty();
+	$('ul').empty();
 
 	getValues();
 }
+
+/* Pulls the values for postal code and country name entered by the user. */
 
 function getValues() {
 	var zip = $('input').val();
 	var country = $('select').val();
 	checkInput(zip, country);
 }
+
+/* Checks to see if the entered postal code is valid for a given country and generates an error message 
+   an error is detected. Hardest function to implement because of the great amount of variance in postal
+   codes from county to country. */
 
 function checkInput(zip, country) {
 	var error = "";
@@ -142,8 +152,11 @@ function checkInput(zip, country) {
 	}
 }
 
+/* Performs the actuall call using the OpenWeater API and JSON. Uses AJAX to asyncronously retrieve information
+   from OpenWeather. Stores information retireved into given variables and displays on screen in given spaces. */
+
 function json(zip, country) {
-	var final_url = link + zip + ',' + country + rest;
+	var final_url = link + zip + ',' + country + rest; //Creates the url for the API call
 	$.ajax({
 		type: 'GET',
 		url: final_url,
@@ -170,11 +183,15 @@ function json(zip, country) {
 	});
 }
 
+/* Uses the backGround array given above to change the look of the page based on the weather at that location. */
 function styleChange() {
 	$('.backdrop').css('background-image', "url("+backGround[icon]+")");
 	$('.default_text').css('color', textStyle[icon]);
 	makeTips();
 }
+
+/* Uses various pieces of data from temperature to humidity to redner a series of weather based running advice for each location.
+   If there is a severe weather alert or excessive heat, warns the runner to abstain and returns. */
 
 function makeTips() {
 	if (icon == '11d' || icon == '11n') {
@@ -204,6 +221,8 @@ function makeTips() {
 
 	
 }
+
+/* Uses the tempAdvice and humidAdvice arrays to render expected pace drop based on calculated humidity and temperature. */
 
 function specialAdvice() {
 	if (55 < temp <= 60) {
