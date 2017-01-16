@@ -72,6 +72,24 @@ var textStyle  = {
 	'50n' : 'navy'
 };
 
+var tempAdvice = {
+	'55' : '+5 sec/mile',
+	'60' : '+15 sec/mile',
+	'65' : '+30 sec/mile',
+	'70' : '+40 sec/mile',
+	'75' : '+1:10 sec/mile',
+	'80' : '+2:00 sec/mile'
+}
+
+var humidAdvice = {
+	'55' : '+10 sec/mile',
+	'60' : '+25 sec/mile',
+	'65' : '+45 sec/mile',
+	'70' : '+1:05 sec/mile',
+	'75' : '+1:45 sec/mile',
+	'80' : '+3:00 sec/mile'
+}
+
 var alphaCountries = ["AR", "BN", "CA", "IE", "KZ", "MT", 
 						"NL", "PE", "SO", "SZ", "UK"];
 function reset() {	
@@ -82,6 +100,8 @@ function reset() {
 	$('#humidity').val("");
 	$('#high').val("");
 	$('#low').val("");
+	$('up').empty();
+
 	getValues();
 }
 
@@ -157,33 +177,61 @@ function styleChange() {
 }
 
 function makeTips() {
-	icon = '01d';
 	if (icon == '11d' || icon == '11n') {
 		$('.list-group').append('<li class="list-group-item list-group-item-action list-group-item-danger">' + iconAdvice[icon] + '</li>');
 		return;
 	}
-	else if (temp > 95) {
+	else if (temp > 85) {
 		$('.list-group').append('<li class="list-group-item list-group-item-action list-group-item-danger">It seems excessively warm. Wait for temperatures to drop. Running is not advised!</li>');
 		return;
-	} 
+	}
 
 	if(icon.indexOf('n') > -1) {
-		$('.list-group').append('<li class="list-group-item"> Looks like the sun is not up! Wear high-visibility clothing and use a head</li>');
+		$('.list-group').append('<li class="list-group-item"> Looks like the sun is not up! Wear high-visibility clothing and use a head-lamp.</li>');
 	}
 
-	if(temp > 85) {
-		$('.list-group').append('<li class="list-group-item"> It is very hot outside! Wear a short-sleeve or singlet and take water with you for longer runs!</li>');
+	if (temp < 40) {
+		$('.list-group').append('<li class="list-group-item"> It is quite chilly outside! Wear a layers to start out. Gloves may also be a necessary for the start. If temperatures are sub-zero, run not advised.</li>');
 	}
-	else if (temp < 40) {
-		$('.list-group').append('<li class="list-group-item"> It is quite chilly outside! Wear a few layers to start out. Gloves may also be a necessary for the start.</li>')
+	else if (temp < 55) {
+		$('.list-group').append('<li class="list-group-item">Temperatures seem ideal, but keep reading for additional advice!</li>');
 	}
 	else {
-		$('.list-group').append('<li class="list-group-item">Temperatures seem ideal, but keep reading for additional advice!</li>')
-	}
+		specialAdvice();
+	}	
 	
 	$('.list-group').append('<li class="list-group-item">' + iconAdvice[icon] + '</li>');
 
 	
+}
+
+function specialAdvice() {
+	if (55 < temp <= 60) {
+		key = '55';
+	}
+	else if (60 < temp <= 65) {
+		key = '60';
+	}
+	else if (65 < temp <= 70) {
+		key = '65';
+	}
+	else if (70 < temp <= 75) {
+		key = '70';
+	}
+	else if (75 < temp <= 80) {
+		key = '75';
+	}
+	else {
+		key = '80';
+	}
+
+	if (humidity > 60) {
+		$('.list-group').append('<li class="list-group-item"> Calculated pace drop based on humidity & temperature: ' + humidAdvice[key] + '</li>');
+	}
+	else {
+		$('.list-group').append('<li class="list-group-item"> Calculated pace drop based on humidity & temperature: ' + tempAdvice[key] + '</li>');
+	}
+
 }
 
 function main() {
