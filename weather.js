@@ -5,7 +5,7 @@
 
 var link = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 var rest = '&appid=cc5a41fb95be101dacb32d7c4dbad2ac&units=imperial';
-var temp, description, humidity, high, low, time, icon, cartoon, city;
+var temp, country, description, humidity, high, low, time, icon, cartoon, city;
 button = document.getElementById("bt");
 var JSON;
 
@@ -171,8 +171,10 @@ function json(zip, country) {
 			low = data.main.temp_min;
 			time = data.dt;
 			icon = data.weather[0].icon;
+			country = data.sys.country;
 
 			$('#city').val(city);
+			$('select').val(country);
 			$('#temp').val(temp + "˚F");
 			$('#description').val(description);
 			$('#humidity').val(humidity + '%');
